@@ -27,12 +27,21 @@ export const excuteMicroMacroTask = () => {
 // TODO: 콘솔에 onUpdate for First -> second -> third 순으로 출력하세요.
 export const questionMicroMacroTask = () => {
     const caller: TaskCaller = new TaskCaller();
-    caller.onUpdate = () => {
-        console.log('onUpdate for First');
-    };
-    caller.callTask();
+    
+    
     const secondTask = () => console.log('second');
     const thirdTask = () => console.log('third');
-    secondTask();
-    thirdTask();
+
+    new Promise<void>((resolve,reject)=>{
+        caller.onUpdate = () => {
+            console.log('onUpdate for First');
+            resolve();
+        };
+        caller.callTask(); //비동기이므로 이 다음에 `resolve`하면 바로 `then`이 실행됨.
+    }).then(()=> {
+        secondTask();
+        thirdTask();
+    })
+    
+    
 };

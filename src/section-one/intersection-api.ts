@@ -74,7 +74,24 @@ function exec() {
         rootMargin: '0px 0px 0px 0px',
         threshold,
     };
+
     // TODO
+    let callback = (entries: any[], observer: any) => {
+        entries.forEach((entry, index) => {
+            console.log("FOR EACH")
+            if (entry.isIntersecting) { // 뷰포트와 해당 요소가 threshold(0.2 =20%만큼 교차)만큼 교차됐을 때 
+                console.log("isIntersecting",imageData[index].src)
+                entry.target.src = imageData[index].src
+                observer.unobserve(entry.target)    // entry.target에 대해 관찰 종료
+            }
+        });
+      };
+      
+    let observer = new IntersectionObserver(callback, observerOption);
+    
+    let elems = document.querySelectorAll('.lazy-image')
+    elems.forEach(el => {observer.observe(el)})
+    console.log("OBSERVE START")
 }
 
 export const execIntersection = () => {
