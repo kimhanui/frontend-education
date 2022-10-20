@@ -13,6 +13,7 @@ import { solutionMicroMacroTask } from './section-one/solution';
 import { mutationObserver } from './section-one/observer-api';
 import { execIntersection } from './section-one/intersection-api';
 import { execClosure } from './section-two/state';
+import { debounce } from './section-two/debounce';
 
 const eventExample = () => {
     const test1 = ({ detail: data }: CustomEvent) => {
@@ -33,3 +34,17 @@ const inlineTest = () => {
     inlineCashingTest();
     inlineCashingTestByDeOptimize();
 };
+
+// debounce(() => console.log("debounce1")); //이건 함수만 리턴함. 실행하지 않음
+
+const a = (d: string) => {
+    console.log(d)
+}
+
+const debouncer = debounce(a)
+
+debouncer(1)
+debouncer(2)
+debouncer(3) //3만 출력되는 이유: 앞의 1,2는 debounce내에 공유되는 timeout이 지워졌기때문
+
+//참고: addEventListener에 사용됨.
